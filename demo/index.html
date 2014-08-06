@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <title>bb-colorpicker demo</title>        
+
+        <!-- import the polyfiles for browsers without native support -->
+        <script src="platform.js"></script>
+
+        <!-- import the custom element -->
+        <link rel="import" href="bb-colorpicker.html"> 
+
+    </head>
+    <body>       
+
+        <!-- define the custom element -->
+        <bb-colorpicker width="300" height="300"></bb-colorpicker>
+
+        <!-- for demo output purposes -->        
+        <div style="width: 300px; height: 30px;" id="colorDisplay"></div>
+        <div id="colorValues"></div>
+        
+        <script type="text/javascript">
+
+            var cp = document.querySelector('bb-colorpicker');
+            var display = document.getElementById('colorDisplay');
+            var output = document.getElementById('colorValues');
+
+            //listen for 'colorselected' event on the bb-colorpicker element which returns a details param with hex and rgb values
+            cp.addEventListener('colorselected', function(e) {
+                output.innerHTML = e.detail.hex + ' (r=' + e.detail.rgb.r + ', g=' + e.detail.rgb.g + ', b=' + e.detail.rgb.b + ')';
+                display.style.backgroundColor = e.detail.hex;
+            });
+        </script>
+
+    </body>
+</html>

@@ -1,0 +1,167 @@
+<script>
+
+var bbColorPickerPrototype = Object.create(HTMLElement.prototype);
+
+bbColorPickerPrototype.init = function(element, attrs) {
+
+    this.element = element;
+    this.canvas = null;
+    this.context = null;
+    this.color = null;
+    this.mouseMoveIsThrottled = true;
+    this.width = attrs.width || 300;
+    this.height = attrs.height || 300;
+
+    //create UI
+    this.shadowRoot = element.createShadowRoot();
+    this.pickerDraw();
+
+    ///event listeners
+    element.addEventListener('click', this.onColorSelect);
+    element.addEventListener('mousedown', this.onMouseDown);
+    element.addEventListener('mouseup', this.onMouseUp);
+}
+
+bbColorPickerPrototype.onMouseDown = function(e) {
+    this.element.addEventListener('mousemove', this.onMouseMove);
+}
+
+bbColorPickerPrototype.onMouseUp = function(e) {
+    this.element.removeEventListener('mousemove', this.onMouseMove);
+}
+
+bbColorPickerPrototype.onMouseMove = function(e) {
+    if (this.mouseMoveIsThrottled) {                    
+        this.mouseMoveIsThrottled = false;
+        bbColorPickerPrototype.onColorSelect(e);
+        setTimeout(function() {
+            this.mouseMoveIsThrottled = true;
+        }.bind(this), 100);
+    }
+}                        
+
+bbColorPickerPrototype.onColorSelect = function(e) {
+
+    var coords = this.relativeMouseCoordinates(e);
+    var data = this.context.getImageData(coords.x, coords.y, 1, 1).data;
+
+    this.setColor(data[0], data[1], data[2]);
+};
+
+bbColorPickerPrototype.pickerDraw = function() {
+
+    this.canvas = document.createElement('canvas');
+    this.canvas.setAttribute("width", this.width);
+    this.canvas.setAttribute("height", this.height);
+    this.canvas.setAttribute("style", "cursor:crosshair");
+    this.canvas.setAttribute("class", "simpleColorPicker");
+
+    this.context = this.canvas.getContext('2d');
+
+    var colorGradient = this.context.createLinearGradient(0, 0, this.width, 0);
+    colorGradient.addColorStop(0, "rgb(255,0,0)");
+    colorGradient.addColorStop(0.16, "rgb(255,0,255)");
+    colorGradient.addColorStop(0.32, "rgb(0,0,255)");
+    colorGradient.addColorStop(0.48, "rgb(0,255,255)");
+    colorGradient.addColorStop(0.64, "rgb(0,255,0)");
+    colorGradient.addColorStop(0.80, "rgb(255,255,0)");
+    colorGradient.addColorStop(1, "rgb(255,0,0)");
+    this.context.fillStyle = colorGradient;
+    this.context.fillRect(0, 0, this.width, this.height);
+
+    var bwGradient = this.context.createLinearGradient(0, 0, 0, this.height);
+    bwGradient.addColorStop(0, "rgba(255,255,255,1)");
+    bwGradient.addColorStop(0.5, "rgba(255,255,255,0)");
+    bwGradient.addColorStop(0.5, "rgba(0,0,0,0)");
+    bwGradient.addColorStop(1, "rgba(0,0,0,1)");
+
+    this.context.fillStyle = bwGradient;
+    this.context.fillRect(0, 0, this.width, this.height); 
+
+    this.shadowRoot.appendChild(this.canvas);
+
+}
+
+bbColorPickerPrototype.setColor = function(r,g,b) {
+
+    var rgb = {
+        r: r,
+        g: g,
+        b: b
+    };
+
+    //save calculated color
+    this.color = {
+        hex: this.rgbToHex(rgb),
+        rgb: rgb
+    };
+
+    //update element attribute
+    this.element.setAttribute('color', this.color.hex);
+
+    //broadcast color selected event
+    var event = new CustomEvent('colorselected', {
+        detail: {
+            rgb: this.color.rgb,
+            hex: this.color.hex
+        }
+    });
+
+    this.element.dispatchEvent(event);
+}
+
+/**
+ * given red, green, blue values, return the equivalent hexidecimal value
+ * base source: http://stackoverflow.com/a/5624139
+ */
+bbColorPickerPrototype.componentToHex = function(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+};
+
+bbColorPickerPrototype.rgbToHex = function(color) {
+    return "#" + bbColorPickerPrototype.componentToHex(color.r) + bbColorPickerPrototype.componentToHex(color.g) + bbColorPickerPrototype.componentToHex(color.b);
+};
+
+/**
+ * given a mouse click event, return x,y coordinates relative to the clicked target
+ * @returns object with x, y values
+ * base source: http://stackoverflow.com/a/5932203
+ */
+bbColorPickerPrototype.relativeMouseCoordinates = function(event) {
+
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+    var currentElement = this.element;
+
+    do {
+        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+    } while (currentElement = currentElement.offsetParent);
+
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+
+    return {
+        x:canvasX, 
+        y:canvasY
+    }
+};
+
+bbColorPickerPrototype.createdCallback = function(e) {
+
+    //parse attributes
+    var attrs = {
+        width: this.getAttribute('width'),
+        height: this.getAttribute('height')
+    };
+
+    //initialize
+    bbColorPickerPrototype.init(this, attrs);
+}
+
+document.registerElement('bb-colorpicker', { prototype: bbColorPickerPrototype });
+
+</script>
