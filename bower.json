@@ -1,6 +1,6 @@
 {
   "name": "color-picker-element",
-  "main": "",
+  "main": "/dist/color-picker.html",
   "version": "0.0.1",
   "authors": [
     "bbrewer97202@gmail.com"

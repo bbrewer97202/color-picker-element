@@ -3,7 +3,7 @@
 A custom HTML element that provides a color picker.  
 
 ## Demo
-[Demo](http://bbrewer97202.github.io/bb-colorpicker/demo/index.html)
+[Demo](http://bbrewer97202.github.io/color-picker-element/demo/index.html)
 
 ## Requirements
 No extra requirements if run in a browser that supports custom elements, shadow DOM and HTML imports.  Otherwise, use the platform.js polyfill provided.
