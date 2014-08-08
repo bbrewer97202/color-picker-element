@@ -1,20 +1,20 @@
 {
   "name": "color-picker-element",
-  "main": "dist/bb-colorpicker.html",
+  "main": "",
   "version": "0.0.1",
   "authors": [
     "bbrewer97202@gmail.com"
   ],
-  "description": "A custom HTML element that provides a color picker",
+  "description": "Custom HTML color picker element",
   "keywords": [
     "custom-element",
-    "component",
     "web-component",
     "color",
     "colorpicker",
     "color-picker"
   ],
   "license": "MIT",
+  "homepage": "https://github.com/bbrewer97202/color-picker-element",
   "ignore": [
     "**/.*",
     "node_modules",

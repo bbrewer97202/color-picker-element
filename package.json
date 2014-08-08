@@ -1,7 +1,7 @@
 {
   "name": "color-picker-element",
   "version": "0.0.1",
-  "description": "html colorpicker custom element",
+  "description": "Custom HTML color picker element",
   "main": "dist/demo/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,10 +13,8 @@
   "keywords": [
     "colorpicker",
     "color",
-    "custom",
-    "element",
-    "web",
-    "component"
+    "web-components",
+    "custom-element"
   ],
   "author": "bbrewer97202@gmail.com",
   "license": "MIT",
