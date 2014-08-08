@@ -1,0 +1,29 @@
+{
+  "name": "color-picker-element",
+  "main": "dist/bb-colorpicker.html",
+  "version": "0.0.1",
+  "authors": [
+    "bbrewer97202@gmail.com"
+  ],
+  "description": "A custom HTML element that provides a color picker",
+  "keywords": [
+    "custom-element",
+    "component",
+    "web-component",
+    "color",
+    "colorpicker",
+    "color-picker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "src/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer-platform": "~0.3.4"
+  }
+}
