@@ -1,31 +1,33 @@
 <!doctype html>
 <html>
     <head>
-        <title>bb-colorpicker demo</title>        
+        <meta name="viewport" content="width=device-width,user-scalable=no">
+        <title>color-picker custom element demo</title>        
 
-        <!-- import the polyfiles for browsers without native support -->
+        <!-- import polyfils for browsers without native support -->
         <script src="platform.js"></script>
 
         <!-- import the custom element -->
-        <link rel="import" href="bb-colorpicker.html"> 
+        <link rel="import" href="../color-picker.html"> 
 
     </head>
     <body>       
-
+        
         <!-- define the custom element -->
-        <bb-colorpicker width="300" height="300"></bb-colorpicker>
+        <color-picker width="300" height="300"></color-picker>
 
-        <!-- for demo output purposes -->        
-        <div style="width: 300px; height: 30px;" id="colorDisplay"></div>
+        <!-- for demo output purposes -->   
+        <h3>&lt;color-picker&gt;</h3>     
+        <div style="width: 200px; height: 30px; border: solid 1px #eee;" id="colorDisplay"></div>
         <div id="colorValues"></div>
         
         <script type="text/javascript">
 
-            var cp = document.querySelector('bb-colorpicker');
+            var cp = document.querySelector('color-picker');
             var display = document.getElementById('colorDisplay');
             var output = document.getElementById('colorValues');
 
-            //listen for 'colorselected' event on the bb-colorpicker element which returns a details param with hex and rgb values
+            //listen for 'colorselected' event on the color-picker element which returns a details param with hex and rgb values
             cp.addEventListener('colorselected', function(e) {
                 output.innerHTML = e.detail.hex + ' (r=' + e.detail.rgb.r + ', g=' + e.detail.rgb.g + ', b=' + e.detail.rgb.b + ')';
                 display.style.backgroundColor = e.detail.hex;
