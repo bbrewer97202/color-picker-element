@@ -3,7 +3,7 @@
 A custom HTML element that provides a color picker.  
 
 ## Demo
-[Demo](http://bbrewer97202.github.io/color-picker-element/demo/index.html)
+[See demo](http://bbrewer97202.github.io/color-picker-element/demo/index.html)
 
 ## Requirements
 No extra requirements if run in a browser that supports custom elements, shadow DOM and HTML imports.  Otherwise, use the platform.js polyfill provided.
@@ -38,13 +38,7 @@ $ bower install color-picker-element --save
 
 ## Development
 
-1. Install [Bower](http://bower.io/) (if not already installed):
-
-    ```sh
-    $ [sudo] npm install -g bower
-    ```
-
-2. Install local dependencies:
+1. Install local dependencies (requires [Bower](http://bower.io/)):
 
     ```sh
     $ bower install && npm install
