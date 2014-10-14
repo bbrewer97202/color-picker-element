@@ -109,7 +109,6 @@ colorPickerPrototype.rgbToHex = function(color) {
 
 /**
  * given a mouse click event, return x,y coordinates relative to the clicked target
- * //TODO: revisit and test
  * @returns object with x, y values
  */
 colorPickerPrototype.relativeMouseCoordinates = function(e) {
@@ -117,12 +116,9 @@ colorPickerPrototype.relativeMouseCoordinates = function(e) {
     var x = 0, y = 0;
 
     if (this.canvas) {
-
-        x = (e.pageX) ? e.pageX : e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-        y = (e.pageY) ? e.pageY : e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-
-        x -= this.canvas.offsetLeft;
-        y -= this.canvas.offsetTop;
+        var rect = this.canvas.getBoundingClientRect();
+        x = e.clientX - rect.left;
+        y = e.clientY - rect.top;
     } 
 
     return {
