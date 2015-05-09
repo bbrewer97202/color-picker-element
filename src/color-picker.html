@@ -7,11 +7,29 @@
 var colorPickerPrototype = Object.create(HTMLElement.prototype);
 
 colorPickerPrototype.onMouseDown = function(e) {
+    this.onMouseMove(e);
     this.addEventListener('mousemove', this.onMouseMove);
 }
 
 colorPickerPrototype.onMouseUp = function(e) {
     this.removeEventListener('mousemove', this.onMouseMove);
+}
+
+colorPickerPrototype.onTouchStart = function(e) {
+    this.onTouchMove(e);
+    this.addEventListener('touchmove', this.onTouchMove);
+}
+
+colorPickerPrototype.onTouchEnd = function(e) {
+    this.removeEventListener('touchmove', this.onTouchMove);
+}
+
+colorPickerPrototype.onTouchMove = function(e) {
+    var touch = e.touches[0]; 
+    this.onColorSelect(e, {
+        x: touch.clientX,
+        y: touch.clientY
+    });
 }
 
 colorPickerPrototype.onMouseMove = function(e) {
@@ -25,11 +43,11 @@ colorPickerPrototype.onMouseMove = function(e) {
     }
 }                        
 
-colorPickerPrototype.onColorSelect = function(e) {
+colorPickerPrototype.onColorSelect = function(e, coords) {
 
     if (this.context) {
 
-        var coords = this.relativeMouseCoordinates(e);
+        coords = coords || this.relativeMouseCoordinates(e);
         var data = this.context.getImageData(coords.x, coords.y, 1, 1).data;
 
         this.setColor({
@@ -116,9 +134,9 @@ colorPickerPrototype.relativeMouseCoordinates = function(e) {
     var x = 0, y = 0;
 
     if (this.canvas) {
-		var rect = this.canvas.getBoundingClientRect();
-        x = e.x - rect.left;
-        y = e.y - rect.top;
+        var rect = this.canvas.getBoundingClientRect();
+        x = e.clientX - rect.left;
+        y = e.clientY - rect.top;
     } 
 
     return {
@@ -149,11 +167,10 @@ colorPickerPrototype.createdCallback = function(e) {
     this.shadowRoot.appendChild(this.canvas);
 
     ///event listeners
-    this.addEventListener('tap', this.onColorSelect);
     this.addEventListener('mousedown', this.onMouseDown);
     this.addEventListener('mouseup', this.onMouseUp);
-    this.addEventListener('touchstart', this.onMouseDown);
-    this.addEventListener('touchend', this.onMouseUp);
+    this.addEventListener('touchstart', this.onTouchStart);
+    this.addEventListener('touchend', this.onTouchEnd);
 
 }
 
