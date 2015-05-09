@@ -1,6 +1,6 @@
 {
   "name": "color-picker-element",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Custom HTML color picker element",
   "main": "dist/demo/index.html",
   "scripts": {
