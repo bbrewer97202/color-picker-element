@@ -117,8 +117,8 @@ colorPickerPrototype.relativeMouseCoordinates = function(e) {
 
     if (this.canvas) {
 		var rect = this.canvas.getBoundingClientRect();
-        x = e.clientX - rect.left;
-        y = e.clientY - rect.top;
+        x = e.x - rect.left;
+        y = e.y - rect.top;
     } 
 
     return {
@@ -149,9 +149,11 @@ colorPickerPrototype.createdCallback = function(e) {
     this.shadowRoot.appendChild(this.canvas);
 
     ///event listeners
-    this.addEventListener('click', this.onColorSelect);
+    this.addEventListener('tap', this.onColorSelect);
     this.addEventListener('mousedown', this.onMouseDown);
     this.addEventListener('mouseup', this.onMouseUp);
+    this.addEventListener('touchstart', this.onMouseDown);
+    this.addEventListener('touchend', this.onMouseUp);
 
 }
 
